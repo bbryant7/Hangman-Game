@@ -5,7 +5,19 @@
     <title>Word Guessing Game</title>
   </head>
   <body>
-    <h1> Guess the Word!</h>
+    <h1 style="text-align:center;"> Guess the Word!</h>
+      <div id="word-display" style="background-color:pink; height: 200px;">
+        {{letter}}
+      </div>
+      <div style="align-content:center;">
+        <h4 id="guess"> Guesses left: </h4>
+        <form action="/guess" method="post">
+          <input type="text" name="letter" placeholder="Enter a letter here">
+          <button type="submit" name"button">Guess!</button>
+        </form>
+      </div>
+
+
 
   </body>
 </html>
