@@ -6,13 +6,24 @@
   </head>
   <body>
     <h1 style="text-align:center;"> Guess the Word!</h>
-      <div id="word-display" style="background-color:pink; height: 200px;">
-        {{letter}}
+      <div id="word-display" style="background-color:pink; height: 50px;">
+        {{#blanks}}
+        {{blank}}
+        {{/blanks}}
+      </div>
+      <div>
+        <p> You guessed: {{guessedWords}} </p>
       </div>
       <div style="align-content:center;">
-        <h4 id="guess"> Guesses left: </h4>
+
+        <p id="guess"> You have <span style="color:aqua">8</span> guesses left </p>
+
+        {{#errors}}
+        <p style="color:red">{{msg}}</p>
+        {{/errors}}
+        
         <form action="/guess" method="post">
-          <input type="text" name="letter" placeholder="Enter a letter here">
+          <input type="text" name="letter" placeholder="Enter a letter here" maxlength="1">
           <button type="submit" name"button">Guess!</button>
         </form>
       </div>
