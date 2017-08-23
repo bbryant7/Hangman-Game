@@ -1,4 +1,4 @@
-Set-up:
+[X] Set-up:
 create views folder
 create public folder
 touch app.js folder
@@ -19,16 +19,72 @@ create get route and render mustache page
 TEST AND COMMIT
 
 Sudo Code:
-create data array of words
-create submit form for guessing game
-create post route for form
+[]create data array of words
+[X]create submit form for guessing game
+[X]create post route for form
+[]create variable for guesses - limit = 8
+[]create an array variable for guessed letters
+
+
+[]display:
+find the length of selected word
+create variable called "display"
+push that "amount" of _ into the display variable
+
+[] CHECKPOINT 1 - IS LETTER UNIQUE
+ keep track of guessed letters with session: make sure it has not already been guessed
+  create for loop
+  iterate over array of guessed letters
+  if (guessed letter != array.letter[i]) { push to array of guessed letter}
+  else {error: "you all ready guessed that",}
+
+[] CHECKPOINT 2 - IS LETTER CORRECT
+ see if guess is CORRECT
+  compare guess to letters in given word
+  if guess is correct (letterguessed === word[i]){
+    push letter to display in correct spot*****
+  }
+  else guess is WRONG {
+    limit -= 1
+  }
+
+[]PUSHING LETTERS TO THE DISPLAY
+  word.indexOf(guessedletter) is A NUMBER, an index position in the word
+  example, word.indexOf(b) = 0
+  let display[word.indexOf(guessedword)] = guessedWord
+
+[]END OF GAME
+  []losing
+  if (limit === 0){
+    render "game over"
+    button - PLAY AGAIN - play again button resets word and renders original page
+  } else
+  []winning
+   if limit > 0 && display === word{
+     render You won
+     button - play again
+   }
+
+create errors
+[X]   if nothing is entered, display error message (please submit a guess)
+[]    if a none alpha is entered, display error message (please submit a letter)
+
+
+
+
+
+
+
+
+const word = a randomly selected word between 4-6 letters
+let display = " "
+  for the word.length
+   display += "_ "
 ***generate words
 -for each over array of words, display words
 render words
 count length of word, create empty array, push _ onto array
 render array
 
-guess a letter, if true add to display, add to guess array,
-display underlines with right amount of letters
-display amount of guesses
-post guess to guesses and if correct, word display
+keep track of guessed letters  with session:
+create variable for current word:
