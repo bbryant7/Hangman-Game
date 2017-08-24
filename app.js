@@ -7,7 +7,7 @@ const app = express();
 // const words = fs.readFileSync("/usr/share/dict/words", "utf-8").toLowerCase().split("\n");
 
 const data = [{  word: "Banana"}]
-let word= 'binana';
+let word = "candy";
 let display = [];
 let guess = [];
 let limit = 8;
@@ -50,7 +50,7 @@ app.get('/', function(req, res) {
   }
   console.log(display)
   console.log(word)
-  res.render('hangman', {word})
+  res.render('hangman', {display})
 
 
 })
@@ -71,21 +71,32 @@ let letter = req.body.letter;
   res.render('hangman', {guess});
 }
 
-// For loop compares guessed letter to word, if a letter matches a letter in the array, it is pushed to guessed letters array and added to display, else letter pushed to guessed letters array, limit of guesses is 1 less.
- for (var i = 0; i < word.length; i++) {
-   if (letter === word[i]){
-     let push = word.indexOf(letter)
-     display.splice(push, 1, letter);
-      //  res.render('hangman', {guess});
-      console.log('display', display);
-     }
-     else{
-       console.log("guess didn't match");
-    //  limit = limit - 1
-     console.log("limit",limit);
-    //  res.render('hangman', {guess});
-      }
- }
+// use a for each loop to itterate over word and push letters to display
+ // word = word.split("")
+
+
+for (let i = 0; i < word.length; i++) {
+ if (letter === word[i]){
+   let push = word.indexOf(letter)
+   display.splice(push, 1, letter);
+     res.render('hangman', {display});
+    console.log("the word is",word);
+     console.log(display);
+
+   }
+ };
+
+
+ // word.forEach(function(e){
+ //   console.log(e, "it worked");
+ //   if (letter === e){
+ //     let push = word.indexOf(letter)
+ //     display.splice(push, 1, letter);
+ //      //  res.render('hangman', {guess});
+ //      console.log('display', display);
+ //      console.log ("is this working?");
+ //     }
+ //  })
 })
 
 

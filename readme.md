@@ -22,11 +22,11 @@ Sudo Code:
 []create data array of words
 [X]create submit form for guessing game
 [X]create post route for form
-[]create variable for guesses - limit = 8
-[]create an array variable for guessed letters
+[X]create variable for guesses - limit = 8
+[X]create an array variable for guessed letters
 
 
-[]display:
+[X]display:
 find the length of selected word
 create variable called "display"
 push that "amount" of _ into the display variable
@@ -48,7 +48,8 @@ push that "amount" of _ into the display variable
     limit -= 1
   }
 
-[]PUSHING LETTERS TO THE DISPLAY
+****for loop cannot account for doubles, for each is kinda wonky still
+[X]PUSHING LETTERS TO THE DISPLAY
   word.indexOf(guessedletter) is A NUMBER, an index position in the word
   example, word.indexOf(b) = 0
   let display[word.indexOf(guessedword)] = guessedWord
