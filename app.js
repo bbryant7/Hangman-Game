@@ -34,6 +34,20 @@ app.use(session({
 }))
 // BOILER PLATE
 //
+
+app.get('/', function(req, res) {
+  for (let i = 0; i < word.length; i++) {
+    display.push('_ ');
+  }
+  console.log(display)
+  console.log(word)
+  res.render('hangman', {
+    display,
+    limit,
+    guess})
+})
+
+
 // app.use(function (req, res, next) {
 //   console.log('in interceptor');
 //   guess.forEach(function(e) {
@@ -47,29 +61,15 @@ app.use(session({
 // })
 // })
 
-app.get('/', function(req, res) {
-  for (let i = 0; i < word.length; i++) {
-    display.push('_ ');
-  }
-  console.log(display)
-  console.log(word)
-  res.render('hangman', {
-    display,
-    limit,
-    guess
-  })
 
-
-
-})
-
-let array
-function findLetters (){
-
-}
+// [] CHECKPOINT 1 - IS LETTER UNIQUE
+//  keep track of guessed letters with session: make sure it has not already been guessed
+//   create for loop
+//   iterate over array of guessed letters
+//   if (guessed letter != array.letter[i]) { push to array of guessed letter}
+//   else {error: "you all ready guessed that",}
 
 app.post('/guess', function(req, res) {
-
   // checks for error of empty guess
   req.checkBody('letter', 'please guess a letter').notEmpty();
   let errors = req.validationErrors();
@@ -80,39 +80,35 @@ app.post('/guess', function(req, res) {
       errors,
       display,
       limit,
-      guess
-    });
+      guess});
     console.log("error");
   } else {
 
     console.log("no error");
-    word.forEach(function(e){
+    word.forEach(function(e) {
       console.log(e, "it worked");
-      if (letter === e){
+      if (letter === e) {
         let push = word.indexOf(letter)
         display.splice(push, 1, letter);
-         //  res.render('hangman', {guess});
-         console.log('display', display);
-         console.log ("is this working?");
-         console.log("word",word);
-        }
-     })
+        //  res.render('hangman', {guess});
+        console.log('display', display);
+        console.log("is this working?");
+        console.log("word", word);
+      }
+    })
+    guess.push(letter);
+    // need to split the guess array
     res.render('hangman', {
       display,
       limit,
-      guess
-    });
-
+      guess});
   }
-
-  // use a for each loop to itterate over word and push letters to display
-  // word = word.split("")
-
-  //
-
 });
 
+// use a for each loop to itterate over word and push letters to display
+// word = word.split("")
 
+//
 // word.forEach(function(e){
 //   console.log(e, "it worked");
 //   if (letter === e){

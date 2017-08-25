@@ -19,7 +19,7 @@ create get route and render mustache page
 TEST AND COMMIT
 
 Sudo Code:
-[]create data array of words
+[X]create data array of words
 [X]create submit form for guessing game
 [X]create post route for form
 [X]create variable for guesses - limit = 8
@@ -38,13 +38,13 @@ push that "amount" of _ into the display variable
   if (guessed letter != array.letter[i]) { push to array of guessed letter}
   else {error: "you all ready guessed that",}
 
-[] CHECKPOINT 2 - IS LETTER CORRECT
+[X] CHECKPOINT 2 - IS LETTER CORRECT
  see if guess is CORRECT
   compare guess to letters in given word
   if guess is correct (letterguessed === word[i]){
     push letter to display in correct spot*****
   }
-  else guess is WRONG {
+[] else guess is WRONG {
     limit -= 1
   }
 
