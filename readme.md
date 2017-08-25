@@ -89,3 +89,18 @@ render array
 
 keep track of guessed letters  with session:
 create variable for current word:
+
+
+
+//So first we do a random sit
+//Make the word to display can be a function that takes in two params (word, guesses)
+//then an empty display array []
+//for loop through where i < word.length
+//let’s do a condition where if
+//guesses.indexOf(word[i]) !== -1 {
+//displayArray.push(word[i]);
+// } else {
+// displayArray.push(the underscore);
+//}
+//}
+//return displayArray.join(” “)

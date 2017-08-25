@@ -3,11 +3,12 @@ const mustacheExpress = require('mustache-express');
 const bodyParser = require('body-parser');
 const expressValidator = require('express-validator');
 const session = require('express-session');
+const wordList = require('./models/words');
 const app = express();
 // const words = fs.readFileSync("/usr/share/dict/words", "utf-8").toLowerCase().split("\n");
-
-const data = [{  word: "Banana"}]
-let word = "candy";
+let word = wordList[Math.floor(Math.random() * wordList.length)];
+// let word = "candy";
+word = word.split("");
 let display = [];
 let guess = [];
 let limit = 8;
@@ -21,7 +22,8 @@ app.set('views', './views');
 app.set('view engine', 'mustache');
 // body-parser
 app.use(bodyParser.urlencoded({
-  extended: false}));
+  extended: false
+}));
 // validator
 app.use(expressValidator());
 // session
@@ -34,14 +36,15 @@ app.use(session({
 //
 // app.use(function (req, res, next) {
 //   console.log('in interceptor');
-//   if (req.session.letter != letter) {
-//     guessedWords.push(letter);
+//   guess.forEach(function(e) {
+//   if (req.session.letter != e) {
+//     guess.push(letter);
 //     next()
-//   } else (req.session === letter) {
-//     // fall out of loop ?
-//     // maybe add error that says (you already guessed that)
+//   } else {
+//     next()
 //     console.log ("meow");
 //   }
+// })
 // })
 
 app.get('/', function(req, res) {
@@ -50,54 +53,87 @@ app.get('/', function(req, res) {
   }
   console.log(display)
   console.log(word)
-  res.render('hangman', {display})
+  res.render('hangman', {
+    display,
+    limit,
+    guess
+  })
+
 
 
 })
+
+let array
+function findLetters (){
+
+}
 
 app.post('/guess', function(req, res) {
 
-// checks for error of empty guess
-req.checkBody('letter', 'please guess a letter').notEmpty();
-let errors = req.validationErrors();
-let letter = req.body.letter;
- if (errors) {
-  //  console.log(errors)
-   res.render("hangman", {errors});
-   console.log ("error");
- }
- else {
-   console.log("no error");
-  res.render('hangman', {guess});
-}
+  // checks for error of empty guess
+  req.checkBody('letter', 'please guess a letter').notEmpty();
+  let errors = req.validationErrors();
+  let letter = req.body.letter;
+  if (errors) {
+    //  console.log(errors)
+    res.render("hangman", {
+      errors,
+      display,
+      limit,
+      guess
+    });
+    console.log("error");
+  } else {
 
-// use a for each loop to itterate over word and push letters to display
- // word = word.split("")
+    console.log("no error");
+    word.forEach(function(e){
+      console.log(e, "it worked");
+      if (letter === e){
+        let push = word.indexOf(letter)
+        display.splice(push, 1, letter);
+         //  res.render('hangman', {guess});
+         console.log('display', display);
+         console.log ("is this working?");
+         console.log("word",word);
+        }
+     })
+    res.render('hangman', {
+      display,
+      limit,
+      guess
+    });
+
+  }
+
+  // use a for each loop to itterate over word and push letters to display
+  // word = word.split("")
+
+  //
+
+});
 
 
-for (let i = 0; i < word.length; i++) {
- if (letter === word[i]){
-   let push = word.indexOf(letter)
-   display.splice(push, 1, letter);
-     res.render('hangman', {display});
-    console.log("the word is",word);
-     console.log(display);
+// word.forEach(function(e){
+//   console.log(e, "it worked");
+//   if (letter === e){
+//     let push = word.indexOf(letter)
+//     display.splice(push, 1, letter);
+//      //  res.render('hangman', {guess});
+//      console.log('display', display);
+//      console.log ("is this working?");
+//     }
+//  })
 
-   }
- };
 
-
- // word.forEach(function(e){
- //   console.log(e, "it worked");
- //   if (letter === e){
- //     let push = word.indexOf(letter)
- //     display.splice(push, 1, letter);
- //      //  res.render('hangman', {guess});
- //      console.log('display', display);
- //      console.log ("is this working?");
- //     }
- //  })
-})
+// for (let i = 0; i < word.length; i++) {
+//   if (letter === word[i]) {
+//     let push = word.indexOf(letter)
+//     display.splice(push, 1, letter);
+//     console.log("the word is", word);
+//     console.log(display);
+//
+//   }
+// }
 
 
 app.listen(3000, function() {
