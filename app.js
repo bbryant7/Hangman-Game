@@ -4,15 +4,22 @@ const bodyParser = require('body-parser');
 const expressValidator = require('express-validator');
 const session = require('express-session');
 const wordList = require('./models/words');
+const hangman = {};
 const app = express();
-// const words = fs.readFileSync("/usr/share/dict/words", "utf-8").toLowerCase().split("\n");
 let word = wordList[Math.floor(Math.random() * wordList.length)];
-// let word = "candy";
 word = word.split("");
-let display = [];
-let guess = [];
-let limit = 8;
+let wrong = false;
 
+
+newGame = function() {
+  display = [];
+  limit = 8;
+  win = false;
+  guess = [];
+  for (let i = 0; i < word.length; i++) {
+    display.push('_ ');
+  }
+}
 // VARIABLES ^^
 
 // BOILER PLATE
@@ -33,104 +40,102 @@ app.use(session({
   saveUninitialized: true
 }))
 // BOILER PLATE
-//
 
 app.get('/', function(req, res) {
-  for (let i = 0; i < word.length; i++) {
-    display.push('_ ');
+  if (!req.session.hangman) {
+    req.session.hangman = hangman;
+    newGame();
+    console.log(display)
+    console.log(word)
+    res.render('hangman', {
+      display
+    });
+  } else {
+    res.render('hangman', {
+      display
+    });
   }
-  console.log(display)
-  console.log(word)
-  res.render('hangman', {
-    display,
-    limit,
-    guess})
+});
+
+app.get('/win', function(req, res) {
+  res.render('win')
 })
 
+app.get('/again', function(req, res) {
+  res.render('tryagain', {word})
+})
 
-// app.use(function (req, res, next) {
-//   console.log('in interceptor');
-//   guess.forEach(function(e) {
-//   if (req.session.letter != e) {
-//     guess.push(letter);
-//     next()
-//   } else {
-//     next()
-//     console.log ("meow");
-//   }
-// })
-// })
-
-
-// [] CHECKPOINT 1 - IS LETTER UNIQUE
-//  keep track of guessed letters with session: make sure it has not already been guessed
-//   create for loop
-//   iterate over array of guessed letters
-//   if (guessed letter != array.letter[i]) { push to array of guessed letter}
-//   else {error: "you all ready guessed that",}
+//  check 1: is it a letter?
+//  check 2: is it a dublicate guess?
+//  check 3: is it a correct guesss?
 
 app.post('/guess', function(req, res) {
-  // checks for error of empty guess
+  // check 1 - letter
   req.checkBody('letter', 'please guess a letter').notEmpty();
+  req.checkBody('letter', "Your guess must be a letter").isAlpha();
   let errors = req.validationErrors();
   let letter = req.body.letter;
+
   if (errors) {
-    //  console.log(errors)
     res.render("hangman", {
       errors,
       display,
       limit,
-      guess});
+      guess,
+    });
     console.log("error");
   } else {
+    guess.forEach(function(e) {
+      // check 2 - same letter
+      if (e === letter) {
+        wrong = false;
+        res.render("hangman", {
+          display,
+          limit,
+          guess,
+          double: "you already guessed that letter"
+        });
+      }
+    });
 
-    console.log("no error");
     word.forEach(function(e) {
-      console.log(e, "it worked");
+      // check 3 - correct
       if (letter === e) {
+        wrong = false;
         let push = word.indexOf(letter)
         display.splice(push, 1, letter);
-        //  res.render('hangman', {guess});
-        console.log('display', display);
-        console.log("is this working?");
+        console.log('display after guess', display);
         console.log("word", word);
+
+      } else {
+        wrong = true;
       }
     })
-    guess.push(letter);
-    // need to split the guess array
-    res.render('hangman', {
-      display,
-      limit,
-      guess});
   }
+guess.push(letter);
+let displayString = display.toString();
+let wordString = word.toString();
+console.log("string",displayString);
+console.log("string",wordString);
+if (displayString === wordString) {
+  res.redirect('/win')
+}
+else if (limit === 0){
+  res.redirect('/again', {word})
+} else {
+  res.render('hangman', {
+    display,
+    limit,
+    guess
+  });
+}
+
+  if (wrong = true) {
+    limit -= 1;
+  }
+
+
 });
-
-// use a for each loop to itterate over word and push letters to display
-// word = word.split("")
-
-//
-// word.forEach(function(e){
-//   console.log(e, "it worked");
-//   if (letter === e){
-//     let push = word.indexOf(letter)
-//     display.splice(push, 1, letter);
-//      //  res.render('hangman', {guess});
-//      console.log('display', display);
-//      console.log ("is this working?");
-//     }
-//  })
-
-
-// for (let i = 0; i < word.length; i++) {
-//   if (letter === word[i]) {
-//     let push = word.indexOf(letter)
-//     display.splice(push, 1, letter);
-//     console.log("the word is", word);
-//     console.log(display);
-//
-//   }
-// }
-
 
 app.listen(3000, function() {
   console.log('Successfully started express application!');

@@ -17,10 +17,9 @@
       </div>
 
       <div id="guess-tracking"style="align-content:center;">
-
-        <p> You've guessed: {{guess}} </p>
-
-        <p> You have <span style="color:aqua">{{limit}}</span> guesses left </p>
+          <p> You've guessed: {{guess}} </p>
+          <p> You have <span style="color:aqua">{{limit}}</span> guesses left </p>
+        {{double}}
         {{#errors}}
         <p style="color:red">{{msg}}</p>
         {{/errors}}
@@ -30,6 +29,7 @@
           <button type="submit" name"button">Guess!</button>
         </form>
       </div>
+
   </body>
 
 </html>

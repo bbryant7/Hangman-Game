@@ -48,11 +48,38 @@ push that "amount" of _ into the display variable
     limit -= 1
   }
 
+
 ****for loop cannot account for doubles, for each is kinda wonky still
 [X]PUSHING LETTERS TO THE DISPLAY
   word.indexOf(guessedletter) is A NUMBER, an index position in the word
   example, word.indexOf(b) = 0
   let display[word.indexOf(guessedword)] = guessedWord
+
+  // use a for each loop to itterate over word and push letters to display
+  // word = word.split("")
+
+  //
+  // word.forEach(function(e){
+  //   console.log(e, "it worked");
+  //   if (letter === e){
+  //     let push = word.indexOf(letter)
+  //     display.splice(push, 1, letter);
+  //      //  res.render('hangman', {guess});
+  //      console.log('display', display);
+  //      console.log ("is this working?");
+  //     }
+  //  })
+
+
+  // for (let i = 0; i < word.length; i++) {
+  //   if (letter === word[i]) {
+  //     let push = word.indexOf(letter)
+  //     display.splice(push, 1, letter);
+  //     console.log("the word is", word);
+  //     console.log(display);
+  //
+  //   }
+  // }
 
 []END OF GAME
   []losing
@@ -66,9 +93,9 @@ push that "amount" of _ into the display variable
      button - play again
    }
 
-create errors
+[X]create errors
 [X]   if nothing is entered, display error message (please submit a guess)
-[]    if a none alpha is entered, display error message (please submit a letter)
+[X]    if a none alpha is entered, display error message (please submit a letter)
 
 
 
