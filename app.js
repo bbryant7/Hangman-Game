@@ -61,9 +61,9 @@ app.get('/', function(req, res) {
 
 app.get('/newgame', function(req, res) {
   newGame();
-    res.render('hangman', {
-      display
-    });
+  res.render('hangman', {
+    display
+  });
 });
 
 app.get('/win', function(req, res) {
@@ -71,7 +71,9 @@ app.get('/win', function(req, res) {
 })
 
 app.get('/again', function(req, res) {
-  res.render('tryagain', {word})
+  res.render('tryagain', {
+    word
+  })
 })
 //  check 1: is it a letter?
 //  check 2: is it a dublicate guess?
@@ -121,31 +123,31 @@ app.post('/guess', function(req, res) {
       }
     });
   }
-// end of if statement (if errors/else correct)
+  // end of if statement (if errors/else correct)
+
+  guess.push(letter);
+  let displayString = display.toString();
+  let wordString = word.toString();
+  console.log("string", displayString);
+  console.log("string", wordString);
 
 
-let displayString = display.toString();
-let wordString = word.toString();
-console.log("string",displayString);
-console.log("string",wordString);
+  if (displayString === wordString) {
+    res.redirect('/win')
+  } else if (limit === 0) {
+    res.redirect('/again')
+  } else {
+    console.log("still playing")
+    res.render('hangman', {
+      display,
+      limit,
+      guess
+    });
+  };
 
-
-if (displayString === wordString) {
-  res.redirect('/win')
-}else if (limit === 0){
-  res.redirect('/again')
-} else {
-  console.log ("still playing")
-  res.render('hangman', {
-    display,
-    limit,
-    guess
-  });
-};
-
-if (wrong == true) {
-  limit -= 1;
-};
+  if (wrong == true) {
+    limit -= 1;
+  };
 
 });
 // END OF POST
@@ -154,13 +156,3 @@ if (wrong == true) {
 app.listen(3000, function() {
   console.log('Successfully started express application!');
 })
-
-// validator
-// app.use(expressValidator({
-//   customValidators: {
-//     doubleLetter: function(letter, guess){
-//       return guess.includes(letter);
-//     }
-//   }
-// }));
-// req.checkBody('letter', 'You already guessed that letter.').doubleLetter(guess);
