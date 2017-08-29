@@ -6,20 +6,22 @@ const session = require('express-session');
 const wordList = require('./models/words');
 const hangman = {};
 const app = express();
-let word = wordList[Math.floor(Math.random() * wordList.length)];
-word = word.split("");
-let wrong = false;
+let word;
+let wrong = true;
 
 
 newGame = function() {
   display = [];
+  word = wordList[Math.floor(Math.random() * wordList.length)];
+  word = word.split("");
   limit = 8;
-  win = false;
   guess = [];
   for (let i = 0; i < word.length; i++) {
     display.push('_ ');
+
   }
 }
+
 // VARIABLES ^^
 
 // BOILER PLATE
@@ -31,7 +33,7 @@ app.set('view engine', 'mustache');
 app.use(bodyParser.urlencoded({
   extended: false
 }));
-// validator
+
 app.use(expressValidator());
 // session
 app.use(session({
@@ -57,6 +59,13 @@ app.get('/', function(req, res) {
   }
 });
 
+app.get('/newgame', function(req, res) {
+  newGame();
+    res.render('hangman', {
+      display
+    });
+});
+
 app.get('/win', function(req, res) {
   res.render('win')
 })
@@ -64,13 +73,14 @@ app.get('/win', function(req, res) {
 app.get('/again', function(req, res) {
   res.render('tryagain', {word})
 })
-
 //  check 1: is it a letter?
 //  check 2: is it a dublicate guess?
 //  check 3: is it a correct guesss?
 
+// Beginning of POST
 app.post('/guess', function(req, res) {
-  // check 1 - letter
+  // CHECK 1 - is it a letter
+  // CHECK 2 - has it been guessed
   req.checkBody('letter', 'please guess a letter').notEmpty();
   req.checkBody('letter', "Your guess must be a letter").isAlpha();
   let errors = req.validationErrors();
@@ -84,7 +94,20 @@ app.post('/guess', function(req, res) {
       guess,
     });
     console.log("error");
+
   } else {
+    // CHECK 3 - correct
+    word.forEach(function(e) {
+      if (letter === e) {
+        wrong = false;
+        let push = word.indexOf(letter)
+        display.splice(push, 1, letter);
+
+      } else {
+        console.log("wrong letter")
+      }
+    })
+
     guess.forEach(function(e) {
       // check 2 - same letter
       if (e === letter) {
@@ -93,50 +116,51 @@ app.post('/guess', function(req, res) {
           display,
           limit,
           guess,
-          double: "you already guessed that letter"
+          double: "you already guessed that"
         });
       }
     });
-
-    word.forEach(function(e) {
-      // check 3 - correct
-      if (letter === e) {
-        wrong = false;
-        let push = word.indexOf(letter)
-        display.splice(push, 1, letter);
-        console.log('display after guess', display);
-        console.log("word", word);
-
-      } else {
-        wrong = true;
-      }
-    })
   }
-guess.push(letter);
+// end of if statement (if errors/else correct)
+
+
 let displayString = display.toString();
 let wordString = word.toString();
 console.log("string",displayString);
 console.log("string",wordString);
+
+
 if (displayString === wordString) {
   res.redirect('/win')
-}
-else if (limit === 0){
-  res.redirect('/again', {word})
+}else if (limit === 0){
+  res.redirect('/again')
 } else {
+  console.log ("still playing")
   res.render('hangman', {
     display,
     limit,
     guess
   });
-}
+};
 
-  if (wrong = true) {
-    limit -= 1;
-  }
-
+if (wrong == true) {
+  limit -= 1;
+};
 
 });
+// END OF POST
+
 
 app.listen(3000, function() {
   console.log('Successfully started express application!');
 })
+
+// validator
+// app.use(expressValidator({
+//   customValidators: {
+//     doubleLetter: function(letter, guess){
+//       return guess.includes(letter);
+//     }
+//   }
+// }));
+// req.checkBody('letter', 'You already guessed that letter.').doubleLetter(guess);

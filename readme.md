@@ -55,7 +55,7 @@ push that "amount" of _ into the display variable
   example, word.indexOf(b) = 0
   let display[word.indexOf(guessedword)] = guessedWord
 
-  // use a for each loop to itterate over word and push letters to display
+  // use a for each loop to iterate over word and push letters to display
   // word = word.split("")
 
   //
@@ -87,47 +87,31 @@ push that "amount" of _ into the display variable
     render "game over"
     button - PLAY AGAIN - play again button resets word and renders original page
   } else
-  []winning
-   if limit > 0 && display === word{
+  [X]winning
+   if display === word{
      render You won
      button - play again
    }
 
 [X]create errors
 [X]   if nothing is entered, display error message (please submit a guess)
-[X]    if a none alpha is entered, display error message (please submit a letter)
+[X]   if a none alpha is entered, display error message (please submit a letter)
+[ ]   if double letters, display you already guessed that
 
+// validator
+// app.use(expressValidator({
+//   customValidators: {
+//     doubleLetter: function(letter, guess){
+//       return guess.includes(letter);
+//     }
+//   }
+// }));
+// req.checkBody('letter', 'You already guessed that letter.').doubleLetter(guess);
 
+**** INCOMPLETE WORK ******
+need to get custom validator to work.
+If it works, can take out for each loop for double letter
+can move the guess letters push command inside the else statement
+should fix issue when pushing letters again, spaces and non alpha characters
 
-
-
-
-
-
-const word = a randomly selected word between 4-6 letters
-let display = " "
-  for the word.length
-   display += "_ "
-***generate words
--for each over array of words, display words
-render words
-count length of word, create empty array, push _ onto array
-render array
-
-keep track of guessed letters  with session:
-create variable for current word:
-
-
-
-//So first we do a random sit
-//Make the word to display can be a function that takes in two params (word, guesses)
-//then an empty display array []
-//for loop through where i < word.length
-//let’s do a condition where if
-//guesses.indexOf(word[i]) !== -1 {
-//displayArray.push(word[i]);
-// } else {
-// displayArray.push(the underscore);
-//}
-//}
-//return displayArray.join(” “)
+losing statement, does not properly track wrong guesses
